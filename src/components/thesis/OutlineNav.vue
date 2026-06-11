@@ -22,8 +22,9 @@ defineEmits<{
       :class="[`outline-${block.type}`, { active: block.id === activeBlockId, changed: changedRuleIds.includes(block.ruleId) }]"
       @click="$emit('select', block.id, block.ruleId)"
     >
-      <span>{{ block.title }}</span>
-      <small v-if="changedRuleIds.includes(block.ruleId)">变更</small>
+      <span class="outline-type" aria-hidden="true">{{ block.type.slice(0, 1).toUpperCase() }}</span>
+      <span class="outline-title">{{ block.title }}</span>
+      <span v-if="changedRuleIds.includes(block.ruleId)" class="outline-badge">改</span>
     </a>
   </nav>
 </template>

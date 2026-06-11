@@ -38,16 +38,18 @@ function selectRule(ruleId: string) {
       <div class="brand">
         <span class="brand-mark">PS</span>
         <div>
-          <h1>论文格式可视化样张</h1>
+          <h1>论文格式样张</h1>
           <VersionBadge :version="currentVersion" />
         </div>
       </div>
+
       <ChangeSummary
         :previous-version="previousVersion"
         :current-version="currentVersion"
         :changes="ruleChanges"
         @select-rule="selectRule"
       />
+
       <OutlineNav
         :blocks="thesisBlocks"
         :active-block-id="activeBlockId"
