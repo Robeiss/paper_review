@@ -88,6 +88,14 @@ def init_db() -> None:
               detail TEXT NOT NULL,
               created_at TEXT NOT NULL
             );
+
+            CREATE TABLE IF NOT EXISTS student_progress (
+              user_account TEXT NOT NULL,
+              rule_id TEXT NOT NULL,
+              checked_json TEXT NOT NULL,
+              updated_at TEXT NOT NULL,
+              PRIMARY KEY (user_account, rule_id)
+            );
             """
         )
         seed_users(conn)
@@ -208,6 +216,8 @@ def row_to_version(row: sqlite3.Row) -> dict:
 
 def row_to_rule_change(row: sqlite3.Row) -> dict:
     return {
+        "id": row["id"],
+        "versionId": row["version_id"],
         "ruleId": row["rule_id"],
         "title": row["title"],
         "previous": row["previous"],

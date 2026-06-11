@@ -44,6 +44,8 @@ export interface RuleVersion {
 }
 
 export interface RuleChange {
+  id?: number;
+  versionId?: string;
   ruleId: string;
   title: string;
   previous: string;
@@ -70,4 +72,13 @@ export interface AuthUser {
 export interface AuthSession {
   token: string;
   user: AuthUser;
+}
+
+export interface StudentProgressItem {
+  checkedKeys: string[];
+  updatedAt?: string;
+}
+
+export interface StudentProgress {
+  items: Record<string, StudentProgressItem>;
 }

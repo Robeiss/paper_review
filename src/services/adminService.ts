@@ -1,4 +1,4 @@
-import type { RuleVersion, ThesisRule } from '../types/thesis';
+import type { RuleChange, RuleVersion, ThesisRule } from '../types/thesis';
 
 function authHeaders(token: string) {
   return {
@@ -49,6 +49,30 @@ export function deleteAdminRule(token: string, ruleId: string): Promise<{ ok: bo
 
 export function fetchAdminVersions(token: string): Promise<RuleVersion[]> {
   return requestJson('/api/admin/versions', token);
+}
+
+export function fetchAdminRuleChanges(token: string): Promise<RuleChange[]> {
+  return requestJson('/api/admin/rule-changes', token);
+}
+
+export function createAdminRuleChange(token: string, change: RuleChange): Promise<RuleChange> {
+  return requestJson('/api/admin/rule-changes', token, {
+    method: 'POST',
+    body: JSON.stringify(change),
+  });
+}
+
+export function saveAdminRuleChange(token: string, change: RuleChange): Promise<RuleChange> {
+  return requestJson(`/api/admin/rule-changes/${change.id}`, token, {
+    method: 'PUT',
+    body: JSON.stringify(change),
+  });
+}
+
+export function deleteAdminRuleChange(token: string, changeId: number): Promise<{ ok: boolean }> {
+  return requestJson(`/api/admin/rule-changes/${changeId}`, token, {
+    method: 'DELETE',
+  });
 }
 
 export function createAdminVersion(token: string, version: RuleVersion & { status: string }): Promise<RuleVersion> {

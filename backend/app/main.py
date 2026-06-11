@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from typing import Any
 
 from fastapi import Depends, FastAPI, Header, HTTPException
@@ -54,6 +55,20 @@ class VersionInput(BaseModel):
     source: str
     status: str = "draft"
     changes: list[str]
+
+
+class RuleChangeInput(BaseModel):
+    versionId: str
+    ruleId: str
+    title: str
+    previous: str
+    current: str
+    impact: str
+    risk: str
+
+
+class StudentProgressInput(BaseModel):
+    checkedKeys: list[str]
 
 
 def audit(actor: str, action: str, target: str, detail: str) -> None:
@@ -211,6 +226,74 @@ def list_versions(_: dict[str, str] = Depends(admin_user)) -> list[dict]:
     return [row_to_version(row) for row in rows]
 
 
+@app.get("/api/admin/rule-changes")
+def list_rule_changes(_: dict[str, str] = Depends(admin_user)) -> list[dict]:
+    with connect() as conn:
+        rows = conn.execute("SELECT * FROM rule_changes ORDER BY id DESC").fetchall()
+    return [row_to_rule_change(row) for row in rows]
+
+
+@app.post("/api/admin/rule-changes")
+def create_rule_change(payload: RuleChangeInput, user: dict[str, str] = Depends(admin_user)) -> dict:
+    with connect() as conn:
+        cursor = conn.execute(
+            """
+            INSERT INTO rule_changes (version_id, rule_id, title, previous, current, impact, risk)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                payload.versionId,
+                payload.ruleId,
+                payload.title,
+                payload.previous,
+                payload.current,
+                payload.impact,
+                payload.risk,
+            ),
+        )
+        row = conn.execute("SELECT * FROM rule_changes WHERE id = ?", (cursor.lastrowid,)).fetchone()
+    audit(user["account"], "create_rule_change", payload.ruleId, payload.title)
+    return row_to_rule_change(row)
+
+
+@app.put("/api/admin/rule-changes/{change_id}")
+def update_rule_change(change_id: int, payload: RuleChangeInput, user: dict[str, str] = Depends(admin_user)) -> dict:
+    with connect() as conn:
+        result = conn.execute(
+            """
+            UPDATE rule_changes
+            SET version_id = ?, rule_id = ?, title = ?, previous = ?, current = ?, impact = ?, risk = ?
+            WHERE id = ?
+            """,
+            (
+                payload.versionId,
+                payload.ruleId,
+                payload.title,
+                payload.previous,
+                payload.current,
+                payload.impact,
+                payload.risk,
+                change_id,
+            ),
+        )
+        if result.rowcount == 0:
+            raise HTTPException(status_code=404, detail="Rule change not found")
+        row = conn.execute("SELECT * FROM rule_changes WHERE id = ?", (change_id,)).fetchone()
+    audit(user["account"], "update_rule_change", payload.ruleId, payload.title)
+    return row_to_rule_change(row)
+
+
+@app.delete("/api/admin/rule-changes/{change_id}")
+def delete_rule_change(change_id: int, user: dict[str, str] = Depends(admin_user)) -> dict:
+    with connect() as conn:
+        target = conn.execute("SELECT * FROM rule_changes WHERE id = ?", (change_id,)).fetchone()
+        if not target:
+            raise HTTPException(status_code=404, detail="Rule change not found")
+        conn.execute("DELETE FROM rule_changes WHERE id = ?", (change_id,))
+    audit(user["account"], "delete_rule_change", str(change_id), target["title"])
+    return {"ok": True}
+
+
 @app.post("/api/admin/versions")
 def create_version(payload: VersionInput, user: dict[str, str] = Depends(admin_user)) -> dict:
     with connect() as conn:
@@ -242,3 +325,36 @@ def list_audit_logs(_: dict[str, str] = Depends(admin_user)) -> list[dict]:
     with connect() as conn:
         rows = conn.execute("SELECT * FROM audit_logs ORDER BY id DESC LIMIT 50").fetchall()
     return [dict(row) for row in rows]
+
+
+@app.get("/api/me/progress")
+def get_my_progress(user: dict[str, str] = Depends(current_user)) -> dict:
+    with connect() as conn:
+        rows = conn.execute(
+            "SELECT * FROM student_progress WHERE user_account = ?",
+            (user["account"],),
+        ).fetchall()
+    return {
+        "items": {
+            row["rule_id"]: {
+                "checkedKeys": json.loads(row["checked_json"]),
+                "updatedAt": row["updated_at"],
+            }
+            for row in rows
+        }
+    }
+
+
+@app.put("/api/me/progress/{rule_id}")
+def save_my_progress(rule_id: str, payload: StudentProgressInput, user: dict[str, str] = Depends(current_user)) -> dict:
+    with connect() as conn:
+        conn.execute(
+            """
+            INSERT INTO student_progress (user_account, rule_id, checked_json, updated_at)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(user_account, rule_id)
+            DO UPDATE SET checked_json = excluded.checked_json, updated_at = excluded.updated_at
+            """,
+            (user["account"], rule_id, encode(payload.checkedKeys), now_iso()),
+        )
+    return {"ok": True}

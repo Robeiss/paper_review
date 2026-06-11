@@ -13,8 +13,9 @@ import {
   ruleChanges as fallbackRuleChanges,
   thesisRules,
 } from '../data/thesisRules';
+import { fetchStudentProgress, saveStudentProgress } from '../services/progressService';
 import { fetchRulePack } from '../services/ruleService';
-import type { DataSourceStatus } from '../types/thesis';
+import type { DataSourceStatus, StudentProgress } from '../types/thesis';
 
 const props = defineProps<{
   token: string;
@@ -24,6 +25,7 @@ const rules = ref(thesisRules);
 const previousVersion = ref(fallbackPreviousVersion);
 const currentVersion = ref(fallbackCurrentVersion);
 const ruleChanges = ref(fallbackRuleChanges);
+const progress = ref<StudentProgress>({ items: {} });
 const dataSourceStatus = ref<DataSourceStatus>('loading');
 const activeBlockId = ref(thesisBlocks[0].id);
 const activeRuleId = ref(thesisBlocks[0].ruleId);
@@ -34,6 +36,7 @@ const changedRuleIds = computed(() => ruleChanges.value.map((change) => change.r
 const activeRule = computed(() => ruleMap.value.get(activeRuleId.value) ?? rules.value[0]);
 const activeBlock = computed(() => thesisBlocks.find((block) => block.id === activeBlockId.value) ?? thesisBlocks[0]);
 const activeChange = computed(() => changeMap.value.get(activeRuleId.value));
+const activeCheckedKeys = computed(() => progress.value.items[activeRuleId.value]?.checkedKeys ?? []);
 
 onMounted(async () => {
   try {
@@ -42,6 +45,7 @@ onMounted(async () => {
     currentVersion.value = payload.currentVersion;
     ruleChanges.value = payload.ruleChanges;
     rules.value = payload.thesisRules;
+    progress.value = await fetchStudentProgress(props.token);
     dataSourceStatus.value = 'remote';
   } catch {
     dataSourceStatus.value = 'fallback';
@@ -59,6 +63,14 @@ function selectRule(ruleId: string) {
     selectBlock(targetBlock.id, targetBlock.ruleId);
     document.getElementById(targetBlock.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
+}
+
+async function updateProgress(checkedKeys: string[]) {
+  progress.value.items[activeRuleId.value] = {
+    checkedKeys,
+    updatedAt: new Date().toISOString(),
+  };
+  await saveStudentProgress(props.token, activeRuleId.value, checkedKeys);
 }
 </script>
 
@@ -96,6 +108,13 @@ function selectRule(ruleId: string) {
       @select="selectBlock"
     />
 
-    <RulePanel :rule="activeRule" :block-title="activeBlock.title" :version="currentVersion" :change="activeChange" />
+    <RulePanel
+      :rule="activeRule"
+      :block-title="activeBlock.title"
+      :version="currentVersion"
+      :change="activeChange"
+      :checked-keys="activeCheckedKeys"
+      @progress-change="updateProgress"
+    />
   </main>
 </template>

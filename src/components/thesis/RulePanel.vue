@@ -7,6 +7,11 @@ const props = defineProps<{
   blockTitle: string;
   version: RuleVersion;
   change?: RuleChange;
+  checkedKeys: string[];
+}>();
+
+const emit = defineEmits<{
+  progressChange: [checkedKeys: string[]];
 }>();
 
 const activeTab = ref<'specs' | 'change' | 'check'>('specs');
@@ -24,6 +29,20 @@ const severityLabel = computed(() => {
   };
   return labels[props.rule.severity];
 });
+
+const checkItems = computed(() => [
+  ...props.rule.notes.map((text) => ({ key: `note:${text}`, text, kind: 'note' })),
+  ...props.rule.commonMistakes.map((text) => ({ key: `mistake:${text}`, text, kind: 'mistake' })),
+]);
+
+const checkedCount = computed(() => checkItems.value.filter((item) => props.checkedKeys.includes(item.key)).length);
+
+function toggleCheck(key: string) {
+  const next = props.checkedKeys.includes(key)
+    ? props.checkedKeys.filter((checkedKey) => checkedKey !== key)
+    : [...props.checkedKeys, key];
+  emit('progressChange', next);
+}
 </script>
 
 <template>
@@ -74,18 +93,27 @@ const severityLabel = computed(() => {
     </section>
 
     <section v-else class="tab-panel">
+      <div class="progress-card">
+        <strong>{{ checkedCount }} / {{ checkItems.length }}</strong>
+        <span>当前模块检查进度</span>
+      </div>
+
       <div class="check-grid">
         <div class="check-column">
           <h3>要点</h3>
           <label v-for="note in rule.notes" :key="note" class="check-row">
-            <input type="checkbox" />
+            <input type="checkbox" :checked="checkedKeys.includes(`note:${note}`)" @change="toggleCheck(`note:${note}`)" />
             <span>{{ note }}</span>
           </label>
         </div>
         <div class="check-column">
           <h3>易错</h3>
           <label v-for="mistake in rule.commonMistakes" :key="mistake" class="check-row mistake">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              :checked="checkedKeys.includes(`mistake:${mistake}`)"
+              @change="toggleCheck(`mistake:${mistake}`)"
+            />
             <span>{{ mistake }}</span>
           </label>
         </div>

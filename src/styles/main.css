@@ -347,6 +347,38 @@ label span {
   gap: 8px;
 }
 
+.change-admin-list {
+  display: grid;
+  max-height: 180px;
+  gap: 6px;
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.change-admin-item {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #d8e3dc;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #24312f;
+  cursor: pointer;
+  text-align: left;
+}
+
+.change-admin-item:hover,
+.change-admin-item.active {
+  border-color: #b8ddd1;
+  background: #eaf6f2;
+}
+
+.change-admin-item span {
+  color: #6b7c75;
+  font-size: 12px;
+}
+
 .version-row,
 .audit-row {
   display: flex;
@@ -938,6 +970,29 @@ label span {
 .check-grid {
   display: grid;
   gap: 16px;
+}
+
+.progress-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 12px;
+  border: 1px solid #d8e3dc;
+  border-left: 4px solid #1b7f6f;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.progress-card strong {
+  color: #17685d;
+  font-size: 20px;
+}
+
+.progress-card span {
+  color: #5f6f69;
+  font-size: 13px;
 }
 
 .check-column {
