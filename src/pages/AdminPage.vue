@@ -28,18 +28,14 @@ const message = ref('');
 const error = ref('');
 
 const ruleForm = ref<ThesisRule>(emptyRule());
-const specsText = ref('[]');
-const notesText = ref('[]');
-const mistakesText = ref('[]');
 const versionForm = ref<RuleVersion & { status: string }>({
   id: '',
   name: '',
   publishedAt: new Date().toISOString().slice(0, 10),
   source: '教务处格式通知',
   status: 'draft',
-  changes: [],
+  changes: [''],
 });
-const versionChangesText = ref('[]');
 
 const selectedRule = computed(() => rules.value.find((rule) => rule.id === activeRuleId.value));
 
@@ -49,24 +45,34 @@ function emptyRule(): ThesisRule {
     name: '',
     summary: '',
     specs: [{ label: '字体', value: '小四宋体' }],
-    notes: [],
-    commonMistakes: [],
+    notes: [''],
+    commonMistakes: [''],
     severity: 'normal',
     updatedAt: new Date().toISOString().slice(0, 10),
   };
 }
 
+function cloneRule(rule: ThesisRule): ThesisRule {
+  return JSON.parse(JSON.stringify(rule)) as ThesisRule;
+}
+
 function setRuleForm(rule: ThesisRule) {
   activeRuleId.value = rule.id;
-  ruleForm.value = JSON.parse(JSON.stringify(rule)) as ThesisRule;
-  specsText.value = JSON.stringify(rule.specs, null, 2);
-  notesText.value = JSON.stringify(rule.notes, null, 2);
-  mistakesText.value = JSON.stringify(rule.commonMistakes, null, 2);
+  ruleForm.value = cloneRule(rule);
+  if (!ruleForm.value.specs.length) {
+    ruleForm.value.specs.push({ label: '', value: '' });
+  }
+  if (!ruleForm.value.notes.length) {
+    ruleForm.value.notes.push('');
+  }
+  if (!ruleForm.value.commonMistakes.length) {
+    ruleForm.value.commonMistakes.push('');
+  }
 }
 
 function newRule() {
   activeRuleId.value = '';
-  setRuleForm(emptyRule());
+  ruleForm.value = emptyRule();
 }
 
 async function loadAdminData() {
@@ -80,17 +86,53 @@ async function loadAdminData() {
   }
 }
 
-function parseFormJson() {
-  ruleForm.value.specs = JSON.parse(specsText.value);
-  ruleForm.value.notes = JSON.parse(notesText.value);
-  ruleForm.value.commonMistakes = JSON.parse(mistakesText.value);
+function normalizeRuleForm() {
+  ruleForm.value.specs = ruleForm.value.specs.filter((spec) => spec.label.trim() || spec.value.trim());
+  ruleForm.value.notes = ruleForm.value.notes.map((note) => note.trim()).filter(Boolean);
+  ruleForm.value.commonMistakes = ruleForm.value.commonMistakes.map((mistake) => mistake.trim()).filter(Boolean);
+}
+
+function addSpec() {
+  ruleForm.value.specs.push({ label: '', value: '' });
+}
+
+function removeSpec(index: number) {
+  ruleForm.value.specs.splice(index, 1);
+  if (!ruleForm.value.specs.length) addSpec();
+}
+
+function addNote() {
+  ruleForm.value.notes.push('');
+}
+
+function removeNote(index: number) {
+  ruleForm.value.notes.splice(index, 1);
+  if (!ruleForm.value.notes.length) addNote();
+}
+
+function addMistake() {
+  ruleForm.value.commonMistakes.push('');
+}
+
+function removeMistake(index: number) {
+  ruleForm.value.commonMistakes.splice(index, 1);
+  if (!ruleForm.value.commonMistakes.length) addMistake();
+}
+
+function addVersionChange() {
+  versionForm.value.changes.push('');
+}
+
+function removeVersionChange(index: number) {
+  versionForm.value.changes.splice(index, 1);
+  if (!versionForm.value.changes.length) addVersionChange();
 }
 
 async function saveRule() {
   message.value = '';
   error.value = '';
   try {
-    parseFormJson();
+    normalizeRuleForm();
     if (selectedRule.value) {
       await saveAdminRule(props.session.token, ruleForm.value);
       message.value = '规则已保存';
@@ -101,7 +143,7 @@ async function saveRule() {
     await loadAdminData();
     setRuleForm(ruleForm.value);
   } catch (err) {
-    error.value = err instanceof Error ? err.message : '保存失败，请检查 JSON 格式';
+    error.value = err instanceof Error ? err.message : '保存失败';
   }
 }
 
@@ -123,9 +165,10 @@ async function createVersion() {
   message.value = '';
   error.value = '';
   try {
-    versionForm.value.changes = JSON.parse(versionChangesText.value);
+    versionForm.value.changes = versionForm.value.changes.map((change) => change.trim()).filter(Boolean);
     await createAdminVersion(props.session.token, versionForm.value);
     message.value = '版本草稿已创建';
+    versionForm.value.changes = [''];
     await loadAdminData();
   } catch (err) {
     error.value = err instanceof Error ? err.message : '创建版本失败';
@@ -216,20 +259,45 @@ onMounted(loadAdminData);
           <textarea v-model="ruleForm.summary" rows="3"></textarea>
         </label>
 
-        <div class="json-grid">
-          <label>
-            <span>格式项 JSON</span>
-            <textarea v-model="specsText" rows="9"></textarea>
-          </label>
-          <label>
-            <span>要求说明 JSON</span>
-            <textarea v-model="notesText" rows="9"></textarea>
-          </label>
-          <label>
-            <span>常见错误 JSON</span>
-            <textarea v-model="mistakesText" rows="9"></textarea>
-          </label>
-        </div>
+        <section class="admin-form-section">
+          <div class="admin-section-title compact">
+            <h3>格式项</h3>
+            <button type="button" @click="addSpec">添加格式项</button>
+          </div>
+          <div class="editable-list">
+            <div v-for="(spec, index) in ruleForm.specs" :key="index" class="editable-row two-columns">
+              <input v-model="spec.label" placeholder="项目，例如：字体" />
+              <input v-model="spec.value" placeholder="要求，例如：小四宋体" />
+              <button type="button" class="ghost danger-text" @click="removeSpec(index)">删除</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="admin-form-section">
+          <div class="admin-section-title compact">
+            <h3>要求说明</h3>
+            <button type="button" @click="addNote">添加说明</button>
+          </div>
+          <div class="editable-list">
+            <div v-for="(_, index) in ruleForm.notes" :key="index" class="editable-row one-column">
+              <input v-model="ruleForm.notes[index]" placeholder="输入一条要求说明" />
+              <button type="button" class="ghost danger-text" @click="removeNote(index)">删除</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="admin-form-section">
+          <div class="admin-section-title compact">
+            <h3>常见错误</h3>
+            <button type="button" @click="addMistake">添加错误</button>
+          </div>
+          <div class="editable-list">
+            <div v-for="(_, index) in ruleForm.commonMistakes" :key="index" class="editable-row one-column">
+              <input v-model="ruleForm.commonMistakes[index]" placeholder="输入一条常见错误" />
+              <button type="button" class="ghost danger-text" @click="removeMistake(index)">删除</button>
+            </div>
+          </div>
+        </section>
       </section>
 
       <aside class="admin-side">
@@ -251,10 +319,20 @@ onMounted(loadAdminData);
             <span>来源</span>
             <input v-model="versionForm.source" />
           </label>
-          <label>
-            <span>变更说明 JSON</span>
-            <textarea v-model="versionChangesText" rows="5"></textarea>
-          </label>
+
+          <section class="admin-form-section compact-panel">
+            <div class="admin-section-title compact">
+              <h3>变更说明</h3>
+              <button type="button" @click="addVersionChange">添加</button>
+            </div>
+            <div class="editable-list">
+              <div v-for="(_, index) in versionForm.changes" :key="index" class="editable-row one-column">
+                <input v-model="versionForm.changes[index]" placeholder="输入一条版本变化" />
+                <button type="button" class="ghost danger-text" @click="removeVersionChange(index)">删除</button>
+              </div>
+            </div>
+          </section>
+
           <button type="button" @click="createVersion">创建草稿</button>
 
           <div class="version-list">

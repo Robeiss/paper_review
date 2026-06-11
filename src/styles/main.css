@@ -229,6 +229,15 @@ label span {
   margin-bottom: 12px;
 }
 
+.admin-section-title.compact {
+  margin-bottom: 8px;
+}
+
+.admin-section-title h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
 .admin-rule-item {
   display: grid;
   gap: 4px;
@@ -284,6 +293,52 @@ label span {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
+}
+
+.admin-form-section {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid #d8e3dc;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.admin-form-section.compact-panel {
+  margin-top: 0;
+}
+
+.editable-list {
+  display: grid;
+  gap: 8px;
+}
+
+.editable-row {
+  display: grid;
+  gap: 8px;
+  align-items: center;
+}
+
+.editable-row.two-columns {
+  grid-template-columns: minmax(120px, 0.8fr) minmax(180px, 1.4fr) 64px;
+}
+
+.editable-row.one-column {
+  grid-template-columns: minmax(180px, 1fr) 64px;
+}
+
+.ghost {
+  min-height: 36px;
+  border: 1px solid #d8e3dc;
+  border-radius: 8px;
+  background: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.danger-text {
+  color: #96302f;
 }
 
 .version-list,
