@@ -18,7 +18,6 @@ defineEmits<{
     class="paper-block"
     :class="[`paper-${block.type}`, block.level ? `level-${block.level}` : '', { active }]"
     tabindex="0"
-    @mouseenter="$emit('select')"
     @focus="$emit('select')"
     @click="$emit('select')"
   >
