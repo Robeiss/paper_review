@@ -82,13 +82,76 @@ a {
   color: #1b7f6f;
 }
 
+.change-summary {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0;
+  padding: 12px;
+  border: 1px solid #d8e3dc;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.change-version {
+  display: grid;
+  gap: 4px;
+  color: #596c66;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.change-version strong {
+  color: #1b7f6f;
+}
+
+.change-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #d8e3dc;
+  border-left-width: 4px;
+  border-radius: 6px;
+  background: #fbfcfa;
+  color: #24312f;
+  cursor: pointer;
+  text-align: left;
+}
+
+.change-item:hover {
+  background: #f2f8f5;
+}
+
+.change-item small {
+  white-space: nowrap;
+  color: #596c66;
+  font-size: 12px;
+}
+
+.risk-high {
+  border-left-color: #cf3f3f;
+}
+
+.risk-medium {
+  border-left-color: #c7831c;
+}
+
+.risk-low {
+  border-left-color: #1b7f6f;
+}
+
 .outline {
   display: grid;
   gap: 4px;
 }
 
 .outline-item {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   padding: 9px 10px;
   border-radius: 6px;
   color: #43556a;
@@ -97,11 +160,23 @@ a {
   border: 1px solid transparent;
 }
 
+.outline-item small {
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: #fff4df;
+  color: #8b5a12;
+  font-size: 11px;
+}
+
 .outline-item:hover,
 .outline-item.active {
   background: #e7f0ff;
   border-color: #b8ddd1;
   color: #0f6155;
+}
+
+.outline-item.changed {
+  border-left: 3px solid #c7831c;
 }
 
 .outline-heading span {
@@ -137,6 +212,18 @@ a {
     background 160ms ease,
     border-color 160ms ease,
     box-shadow 160ms ease;
+}
+
+.block-change-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: #fff4df;
+  color: #8b5a12;
+  font-size: 12px;
+  line-height: 1;
 }
 
 .paper-block:hover,
@@ -315,6 +402,34 @@ a {
 .spec-row dd {
   margin: 0;
   font-weight: 700;
+}
+
+.change-detail {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #d8e3dc;
+  border-left-width: 4px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.change-compare {
+  display: grid;
+  gap: 8px;
+}
+
+.change-detail p {
+  color: #43564f;
+}
+
+.change-detail strong {
+  color: #24312f;
+}
+
+.change-impact {
+  padding-top: 8px;
+  border-top: 1px solid #edf2ef;
 }
 
 .rule-panel section {

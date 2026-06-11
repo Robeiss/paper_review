@@ -4,6 +4,7 @@ import type { ThesisBlock } from '../../types/thesis';
 defineProps<{
   block: ThesisBlock;
   active: boolean;
+  changed: boolean;
 }>();
 
 defineEmits<{
@@ -21,6 +22,8 @@ defineEmits<{
     @focus="$emit('select')"
     @click="$emit('select')"
   >
+    <span v-if="changed" class="block-change-badge">本版变更</span>
+
     <template v-if="block.type === 'cover'">
       <p class="school-name">示例大学本科毕业论文</p>
       <h2>{{ block.content[0] }}</h2>

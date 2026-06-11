@@ -5,6 +5,7 @@ import type { ThesisBlock } from '../../types/thesis';
 defineProps<{
   blocks: ThesisBlock[];
   activeBlockId: string;
+  changedRuleIds: string[];
 }>();
 
 defineEmits<{
@@ -20,6 +21,7 @@ defineEmits<{
         :key="block.id"
         :block="block"
         :active="block.id === activeBlockId"
+        :changed="changedRuleIds.includes(block.ruleId)"
         @select="$emit('select', block.id, block.ruleId)"
       />
     </article>

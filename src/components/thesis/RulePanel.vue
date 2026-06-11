@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { RuleVersion, ThesisRule } from '../../types/thesis';
+import type { RuleChange, RuleVersion, ThesisRule } from '../../types/thesis';
 
 defineProps<{
   rule: ThesisRule;
   blockTitle: string;
   version: RuleVersion;
+  change?: RuleChange;
 }>();
 </script>
 
@@ -22,6 +23,15 @@ defineProps<{
         <dd>{{ spec.value }}</dd>
       </div>
     </dl>
+
+    <section v-if="change" class="change-detail" :class="`risk-${change.risk}`">
+      <h3>本版变化</h3>
+      <div class="change-compare">
+        <p><strong>上一版：</strong>{{ change.previous }}</p>
+        <p><strong>当前版：</strong>{{ change.current }}</p>
+      </div>
+      <p class="change-impact">{{ change.impact }}</p>
+    </section>
 
     <section>
       <h3>要求说明</h3>

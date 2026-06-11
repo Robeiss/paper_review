@@ -42,3 +42,12 @@ export interface RuleVersion {
   source: string;
   changes: string[];
 }
+
+export interface RuleChange {
+  ruleId: string;
+  title: string;
+  previous: string;
+  current: string;
+  impact: string;
+  risk: 'low' | 'medium' | 'high';
+}
