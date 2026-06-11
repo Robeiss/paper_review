@@ -20,8 +20,12 @@
 - Vue 3
 - Vite
 - TypeScript
+- Python
+- FastAPI
 
 ## 本地运行
+
+前端：
 
 ```powershell
 E:\nodejs\npm.cmd install
@@ -34,6 +38,22 @@ E:\nodejs\npm.cmd run dev
 http://127.0.0.1:5173
 ```
 
+后端：
+
+```powershell
+python -m pip install -r backend\requirements.txt
+python -m uvicorn backend.app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+接口：
+
+```text
+GET http://127.0.0.1:8000/api/health
+GET http://127.0.0.1:8000/api/rule-versions/current
+```
+
+前端会优先读取后端版本数据；如果后端没有启动，会自动使用本地备用数据。
+
 ## 构建
 
 ```powershell
@@ -44,5 +64,5 @@ E:\nodejs\npm.cmd run build
 
 - V1：完成静态论文格式样张和悬浮规则查看。
 - V2：增加格式规则版本对比和高风险变更提示。
-- V3：增加 Python 后端，用于维护规则、发布版本和管理不同学院模板。
+- V3：接入 Python 后端，提供规则版本接口和前端数据回退机制。
 - V4：探索 Word 上传后的半自动格式检查。

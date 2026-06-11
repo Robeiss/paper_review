@@ -51,3 +51,5 @@ export interface RuleChange {
   impact: string;
   risk: 'low' | 'medium' | 'high';
 }
+
+export type DataSourceStatus = 'loading' | 'remote' | 'fallback';

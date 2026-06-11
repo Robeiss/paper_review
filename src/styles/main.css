@@ -87,6 +87,33 @@ button {
   color: #1b7f6f;
 }
 
+.data-source-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 7px;
+  padding: 4px 8px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.source-remote {
+  color: #17685d;
+  background: #e9f6f1;
+}
+
+.source-loading {
+  color: #855a17;
+  background: #fff4df;
+}
+
+.source-fallback {
+  color: #6b7280;
+  background: #f1f5f9;
+}
+
 .change-summary {
   display: grid;
   gap: 12px;
