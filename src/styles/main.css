@@ -184,10 +184,22 @@ label span {
 }
 
 .admin-grid {
+  position: relative;
   display: grid;
   grid-template-columns: 260px minmax(520px, 1fr) 360px;
   gap: 16px;
   padding: 16px;
+}
+
+.admin-loading {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid #d8e3dc;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #17685d;
+  font-weight: 700;
 }
 
 .admin-list,

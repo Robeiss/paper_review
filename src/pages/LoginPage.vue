@@ -25,7 +25,7 @@ async function submit() {
   try {
     emit('success', await login(account.value, password.value));
   } catch (err) {
-    error.value = err instanceof Error ? err.message : '登录失败';
+    error.value = err instanceof Error ? err.message : '登录失败。';
   } finally {
     loading.value = false;
   }
@@ -39,13 +39,13 @@ async function submit() {
         <span class="brand-mark">PS</span>
         <div>
           <h1>论文格式样张平台</h1>
-          <p>一个学校内的格式规则发布、查看与维护入口。</p>
+          <p>登录后进入学生样张或后台管理。</p>
         </div>
       </div>
 
-      <div class="login-presets" aria-label="测试账号">
-        <button type="button" :class="{ active: roleHint === 'student' }" @click="usePreset('student')">学生入口</button>
-        <button type="button" :class="{ active: roleHint === 'admin' }" @click="usePreset('admin')">后台入口</button>
+      <div class="login-presets" aria-label="示例账号">
+        <button type="button" :class="{ active: roleHint === 'student' }" @click="usePreset('student')">学生账号</button>
+        <button type="button" :class="{ active: roleHint === 'admin' }" @click="usePreset('admin')">后台账号</button>
       </div>
 
       <form class="login-form" @submit.prevent="submit">
@@ -64,6 +64,7 @@ async function submit() {
       <div class="login-hints">
         <span>学生：20260001 / student123</span>
         <span>管理员：admin / admin123</span>
+        <span>提示：上方按钮只切换示例账号，进入系统请点击“登录”。</span>
       </div>
     </section>
   </main>

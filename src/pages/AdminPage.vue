@@ -32,6 +32,7 @@ const activeRuleId = ref('');
 const activeChangeId = ref<number | null>(null);
 const message = ref('');
 const error = ref('');
+const loading = ref(false);
 
 const ruleForm = ref<ThesisRule>(emptyRule());
 const changeForm = ref<RuleChange>(emptyRuleChange());
@@ -101,14 +102,22 @@ function newRuleChange() {
 }
 
 async function loadAdminData() {
-  [rules.value, versions.value, ruleChanges.value, logs.value] = await Promise.all([
-    fetchAdminRules(props.session.token),
-    fetchAdminVersions(props.session.token),
-    fetchAdminRuleChanges(props.session.token),
-    fetchAuditLogs(props.session.token),
-  ]);
-  if (!activeRuleId.value && rules.value[0]) setRuleForm(rules.value[0]);
-  if (!activeChangeId.value && ruleChanges.value[0]) setChangeForm(ruleChanges.value[0]);
+  loading.value = true;
+  error.value = '';
+  try {
+    [rules.value, versions.value, ruleChanges.value, logs.value] = await Promise.all([
+      fetchAdminRules(props.session.token),
+      fetchAdminVersions(props.session.token),
+      fetchAdminRuleChanges(props.session.token),
+      fetchAuditLogs(props.session.token),
+    ]);
+    if (!activeRuleId.value && rules.value[0]) setRuleForm(rules.value[0]);
+    if (!activeChangeId.value && ruleChanges.value[0]) setChangeForm(ruleChanges.value[0]);
+  } catch (err) {
+    error.value = err instanceof Error ? `后台数据加载失败：${err.message}` : '后台数据加载失败';
+  } finally {
+    loading.value = false;
+  }
 }
 
 function normalizeRuleForm() {
@@ -257,6 +266,7 @@ onMounted(loadAdminData);
     </header>
 
     <section class="admin-grid">
+      <p v-if="loading" class="admin-loading">后台数据加载中...</p>
       <aside class="admin-list">
         <div class="admin-section-title">
           <h2>规则</h2>
