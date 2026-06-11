@@ -29,6 +29,286 @@ button {
   border: 0;
 }
 
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid #d8e3dc;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #24312f;
+  font: inherit;
+}
+
+input,
+select {
+  min-height: 38px;
+  padding: 8px 10px;
+}
+
+textarea {
+  padding: 10px;
+  resize: vertical;
+}
+
+label span {
+  display: block;
+  margin-bottom: 6px;
+  color: #5f6f69;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.login-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at top left, rgba(27, 127, 111, 0.14), transparent 320px),
+    #eef3ef;
+}
+
+.login-panel {
+  display: grid;
+  gap: 18px;
+  width: min(460px, 100%);
+  padding: 28px;
+  border: 1px solid #d8e3dc;
+  border-radius: 10px;
+  background: #fbfcfa;
+  box-shadow: 0 18px 60px rgba(36, 49, 47, 0.15);
+}
+
+.login-brand {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 12px;
+}
+
+.login-brand h1 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.login-brand p {
+  margin: 0;
+  color: #5f6f69;
+  line-height: 1.6;
+}
+
+.login-presets {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #edf3ef;
+}
+
+.login-presets button,
+.login-form button,
+.admin-topbar button,
+.admin-section-title button,
+.admin-actions button,
+.admin-card button,
+.version-row button {
+  min-height: 36px;
+  border-radius: 8px;
+  background: #1b7f6f;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.login-presets button {
+  background: transparent;
+  color: #5f6f69;
+}
+
+.login-presets button.active {
+  background: #ffffff;
+  color: #17685d;
+  box-shadow: 0 1px 4px rgba(36, 49, 47, 0.12);
+}
+
+.login-form {
+  display: grid;
+  gap: 12px;
+}
+
+.form-error,
+.admin-error {
+  margin: 0;
+  color: #96302f;
+  font-weight: 700;
+}
+
+.admin-message {
+  margin: 0;
+  color: #17685d;
+  font-weight: 700;
+}
+
+.login-hints {
+  display: grid;
+  gap: 4px;
+  color: #6b7c75;
+  font-size: 12px;
+}
+
+.admin-shell {
+  min-height: 100vh;
+  background: #eef3ef;
+}
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px;
+  border-bottom: 1px solid #d8e3dc;
+  background: #fbfcfa;
+}
+
+.admin-topbar h1,
+.admin-section-title h2,
+.admin-card h2 {
+  margin: 0;
+}
+
+.admin-topbar p {
+  margin: 4px 0 0;
+  color: #5f6f69;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 260px minmax(520px, 1fr) 360px;
+  gap: 16px;
+  padding: 16px;
+}
+
+.admin-list,
+.admin-editor,
+.admin-side {
+  min-width: 0;
+}
+
+.admin-list,
+.admin-editor,
+.admin-card {
+  border: 1px solid #d8e3dc;
+  border-radius: 10px;
+  background: #fbfcfa;
+}
+
+.admin-list,
+.admin-editor {
+  padding: 14px;
+}
+
+.admin-side {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.admin-card {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.admin-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-rule-item {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 10px;
+  border-radius: 8px;
+  background: transparent;
+  color: #24312f;
+  cursor: pointer;
+  text-align: left;
+}
+
+.admin-rule-item span,
+.version-row span,
+.audit-row span,
+.audit-row small {
+  color: #6b7c75;
+  font-size: 12px;
+}
+
+.admin-rule-item:hover,
+.admin-rule-item.active {
+  background: #eaf6f2;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-actions .danger {
+  background: #cf3f3f;
+}
+
+.admin-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.wide-field {
+  display: block;
+  margin: 12px 0;
+}
+
+.json-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.version-list,
+.audit-list {
+  display: grid;
+  gap: 8px;
+}
+
+.version-row,
+.audit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #d8e3dc;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.audit-row {
+  display: grid;
+  justify-content: stretch;
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: 300px minmax(520px, 1fr) 380px;

@@ -53,3 +53,21 @@ export interface RuleChange {
 }
 
 export type DataSourceStatus = 'loading' | 'remote' | 'fallback';
+
+export interface RulePack {
+  previousVersion: RuleVersion;
+  currentVersion: RuleVersion;
+  ruleChanges: RuleChange[];
+  thesisRules: ThesisRule[];
+}
+
+export interface AuthUser {
+  account: string;
+  name: string;
+  role: 'student' | 'admin';
+}
+
+export interface AuthSession {
+  token: string;
+  user: AuthUser;
+}

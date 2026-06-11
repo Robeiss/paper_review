@@ -13,10 +13,14 @@ import {
   ruleChanges as fallbackRuleChanges,
   thesisRules,
 } from '../data/thesisRules';
-import { fetchCurrentRuleVersion } from '../services/ruleService';
+import { fetchRulePack } from '../services/ruleService';
 import type { DataSourceStatus } from '../types/thesis';
 
-const ruleMap = new Map(thesisRules.map((rule) => [rule.id, rule]));
+const props = defineProps<{
+  token: string;
+}>();
+
+const rules = ref(thesisRules);
 const previousVersion = ref(fallbackPreviousVersion);
 const currentVersion = ref(fallbackCurrentVersion);
 const ruleChanges = ref(fallbackRuleChanges);
@@ -24,18 +28,20 @@ const dataSourceStatus = ref<DataSourceStatus>('loading');
 const activeBlockId = ref(thesisBlocks[0].id);
 const activeRuleId = ref(thesisBlocks[0].ruleId);
 
+const ruleMap = computed(() => new Map(rules.value.map((rule) => [rule.id, rule])));
 const changeMap = computed(() => new Map(ruleChanges.value.map((change) => [change.ruleId, change])));
 const changedRuleIds = computed(() => ruleChanges.value.map((change) => change.ruleId));
-const activeRule = computed(() => ruleMap.get(activeRuleId.value) ?? thesisRules[0]);
+const activeRule = computed(() => ruleMap.value.get(activeRuleId.value) ?? rules.value[0]);
 const activeBlock = computed(() => thesisBlocks.find((block) => block.id === activeBlockId.value) ?? thesisBlocks[0]);
 const activeChange = computed(() => changeMap.value.get(activeRuleId.value));
 
 onMounted(async () => {
   try {
-    const payload = await fetchCurrentRuleVersion();
+    const payload = await fetchRulePack(props.token);
     previousVersion.value = payload.previousVersion;
     currentVersion.value = payload.currentVersion;
     ruleChanges.value = payload.ruleChanges;
+    rules.value = payload.thesisRules;
     dataSourceStatus.value = 'remote';
   } catch {
     dataSourceStatus.value = 'fallback';
