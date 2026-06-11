@@ -1,0 +1,387 @@
+:root {
+  color: #24312f;
+  background: #eff4f1;
+  font-family:
+    Inter, "Segoe UI", "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 280px minmax(520px, 1fr) 360px;
+  min-height: 100vh;
+}
+
+.sidebar,
+.rule-panel {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+  background: #fbfcfa;
+}
+
+.sidebar {
+  border-right: 1px solid #d8e3dc;
+  padding: 22px 18px;
+}
+
+.brand {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+.brand-mark {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 8px;
+  background: #1b7f6f;
+  color: white;
+  font-weight: 700;
+}
+
+.brand h1 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.version-badge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+  color: #526579;
+}
+
+.version-badge time {
+  color: #1b7f6f;
+}
+
+.outline {
+  display: grid;
+  gap: 4px;
+}
+
+.outline-item {
+  display: block;
+  padding: 9px 10px;
+  border-radius: 6px;
+  color: #43556a;
+  text-decoration: none;
+  line-height: 1.35;
+  border: 1px solid transparent;
+}
+
+.outline-item:hover,
+.outline-item.active {
+  background: #e7f0ff;
+  border-color: #b8ddd1;
+  color: #0f6155;
+}
+
+.outline-heading span {
+  font-weight: 700;
+}
+
+.paper-stage {
+  overflow: auto;
+  height: 100vh;
+  padding: 32px;
+  background:
+    linear-gradient(90deg, rgba(27, 127, 111, 0.06), transparent 28%),
+    #eef4f0;
+}
+
+.paper-page {
+  width: min(820px, 100%);
+  min-height: calc(100vh - 64px);
+  margin: 0 auto;
+  padding: 64px 72px;
+  background: #fff;
+  box-shadow: 0 18px 60px rgba(36, 49, 47, 0.15);
+}
+
+.paper-block {
+  position: relative;
+  margin: 0 0 18px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.paper-block:hover,
+.paper-block:focus,
+.paper-block.active {
+  background: #f7fbff;
+  border-color: #72c2b3;
+  box-shadow: 0 0 0 3px rgba(27, 127, 111, 0.13);
+}
+
+.paper-block h2,
+.paper-block h3,
+.paper-block h4,
+.paper-block p {
+  margin: 0;
+}
+
+.paper-block p {
+  color: #24312f;
+  font-family: SimSun, "Songti SC", serif;
+  font-size: 16px;
+  line-height: 1.75;
+  text-indent: 2em;
+}
+
+.paper-cover {
+  min-height: 460px;
+  display: grid;
+  align-content: center;
+  text-align: center;
+  gap: 18px;
+}
+
+.paper-cover h2 {
+  font-size: 28px;
+  line-height: 1.35;
+  font-family: SimHei, "Microsoft YaHei", sans-serif;
+}
+
+.paper-cover .school-name,
+.paper-cover .cover-line {
+  text-indent: 0;
+}
+
+.paper-statement,
+.paper-abstract,
+.paper-toc,
+.paper-references,
+.paper-acknowledgement,
+.paper-appendix {
+  margin-top: 34px;
+}
+
+.paper-block h2 {
+  margin-bottom: 14px;
+  text-align: center;
+  font-family: SimHei, "Microsoft YaHei", sans-serif;
+  font-size: 22px;
+}
+
+.paper-block h3 {
+  margin-bottom: 10px;
+  font-family: SimHei, "Microsoft YaHei", sans-serif;
+  font-size: 19px;
+}
+
+.paper-block h4 {
+  margin-bottom: 8px;
+  font-family: SimHei, "Microsoft YaHei", sans-serif;
+  font-size: 17px;
+}
+
+.level-1 {
+  margin-top: 40px;
+}
+
+.level-2,
+.level-3 {
+  margin-top: 20px;
+}
+
+.paper-toc .toc-line,
+.paper-references p {
+  text-indent: 0;
+}
+
+.figure-box {
+  display: grid;
+  min-height: 130px;
+  place-items: center;
+  border: 1px solid #9ab8ad;
+  background: repeating-linear-gradient(45deg, #f7faf8, #f7faf8 10px, #edf4ef 10px, #edf4ef 20px);
+  color: #4d635c;
+  font-size: 15px;
+}
+
+.caption {
+  margin-top: 8px;
+  text-align: center;
+  text-indent: 0;
+  font-size: 13px;
+}
+
+.table-caption {
+  margin-bottom: 8px;
+}
+
+.sample-table {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 2px solid #31433e;
+  border-bottom: 2px solid #31433e;
+}
+
+.sample-table span {
+  padding: 12px;
+  text-align: center;
+  border-top: 1px solid #6d827b;
+  color: #24312f;
+  font-family: SimSun, "Songti SC", serif;
+}
+
+.formula-line {
+  font-family: "Times New Roman", serif;
+  text-align: center;
+  text-indent: 0;
+}
+
+.rule-panel {
+  border-left: 1px solid #d8e3dc;
+  padding: 26px 22px;
+}
+
+.rule-panel-header {
+  padding-bottom: 18px;
+  border-bottom: 1px solid #d8e3dc;
+}
+
+.panel-kicker {
+  color: #1b7f6f;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.rule-panel h2 {
+  margin: 8px 0 10px;
+  font-size: 24px;
+}
+
+.rule-panel p {
+  margin: 0;
+  color: #596c66;
+  line-height: 1.6;
+}
+
+.spec-list {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.spec-row {
+  display: grid;
+  grid-template-columns: 86px 1fr;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #d8e3dc;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.spec-row dt {
+  color: #596c66;
+}
+
+.spec-row dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.rule-panel section {
+  margin-top: 20px;
+}
+
+.rule-panel h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.rule-panel ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #4d635c;
+  line-height: 1.7;
+}
+
+.mistakes li::marker {
+  color: #d14343;
+}
+
+.rule-meta {
+  display: grid;
+  gap: 6px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #d8e3dc;
+  color: #6a7b75;
+  font-size: 12px;
+}
+
+@media (max-width: 1180px) {
+  .app-shell {
+    grid-template-columns: 240px minmax(460px, 1fr);
+  }
+
+  .rule-panel {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    top: auto;
+    width: min(420px, calc(100vw - 36px));
+    max-height: 52vh;
+    border: 1px solid #b8ddd1;
+    border-radius: 8px;
+    box-shadow: 0 18px 60px rgba(36, 49, 47, 0.22);
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    display: block;
+  }
+
+  .sidebar,
+  .rule-panel {
+    position: static;
+    height: auto;
+  }
+
+  .paper-stage {
+    height: auto;
+    padding: 16px;
+  }
+
+  .paper-page {
+    padding: 34px 20px;
+  }
+}

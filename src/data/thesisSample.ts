@@ -1,0 +1,137 @@
+import type { ThesisBlock } from '../types/thesis';
+
+export const thesisBlocks: ThesisBlock[] = [
+  {
+    id: 'cover',
+    type: 'cover',
+    title: '封面',
+    ruleId: 'rule.cover',
+    content: [
+      '校园二手书循环利用平台设计与实现',
+      '学院：示例学院',
+      '专业：示例专业',
+      '学生：示例学生',
+      '指导教师：示例教师',
+    ],
+  },
+  {
+    id: 'statement',
+    type: 'statement',
+    title: '原创性声明',
+    ruleId: 'rule.statement',
+    content: [
+      '本人郑重声明：所呈交的毕业论文是在指导教师指导下独立完成的研究成果。除文中已经注明引用的内容外，本文不包含他人已经发表或撰写过的研究成果。',
+    ],
+  },
+  {
+    id: 'zh-abstract',
+    type: 'abstract',
+    title: '中文摘要',
+    ruleId: 'rule.zhAbstract',
+    content: [
+      '本文围绕校园闲置教材流转效率较低的问题，设计并实现一个二手书循环利用平台。系统通过信息发布、分类检索、预约交换和状态跟踪等功能，帮助学生更便捷地完成教材复用。',
+      '关键词：二手书；校园服务；信息平台；资源循环',
+    ],
+  },
+  {
+    id: 'en-abstract',
+    type: 'abstract',
+    title: 'Abstract',
+    ruleId: 'rule.enAbstract',
+    content: [
+      'This thesis designs and implements a campus used-book reuse platform. The system supports listing, searching, reservation, and status tracking to improve the circulation efficiency of idle textbooks.',
+      'Keywords: used books; campus service; information platform; resource reuse',
+    ],
+  },
+  {
+    id: 'toc',
+    type: 'toc',
+    title: '目录',
+    ruleId: 'rule.toc',
+    content: [
+      '第1章 绪论 ................................ 1',
+      '1.1 研究背景与意义 ......................... 2',
+      '1.2 系统需求分析 ........................... 4',
+      '第2章 系统设计 ............................ 8',
+      '参考文献 .................................. 42',
+    ],
+  },
+  {
+    id: 'chapter-1',
+    type: 'heading',
+    title: '第1章 绪论',
+    level: 1,
+    ruleId: 'rule.heading1',
+    content: ['本章介绍研究背景、研究意义和论文主要工作。'],
+  },
+  {
+    id: 'section-1-1',
+    type: 'heading',
+    title: '1.1 研究背景与意义',
+    level: 2,
+    ruleId: 'rule.heading2',
+    content: ['教材循环利用能够降低重复购买成本，也有助于提升校园资源利用效率。'],
+  },
+  {
+    id: 'body-1',
+    type: 'paragraph',
+    title: '正文段落',
+    ruleId: 'rule.body',
+    content: [
+      '在高校学习场景中，不同年级学生对教材、辅导资料和课程参考书存在周期性需求。通过建设统一的信息平台，可以减少信息分散带来的沟通成本，使闲置书籍更快匹配到需要的使用者。',
+    ],
+  },
+  {
+    id: 'section-1-1-1',
+    type: 'heading',
+    title: '1.1.1 研究对象',
+    level: 3,
+    ruleId: 'rule.heading3',
+    content: ['本节说明平台面向的用户群体、资源类型和基础业务流程。'],
+  },
+  {
+    id: 'figure-1',
+    type: 'figure',
+    title: '图1-1 平台业务流程',
+    ruleId: 'rule.figure',
+    content: ['信息发布 -> 分类检索 -> 预约交换 -> 状态确认'],
+  },
+  {
+    id: 'table-1',
+    type: 'table',
+    title: '表1-1 功能模块划分',
+    ruleId: 'rule.table',
+    content: ['发布模块 30% | 检索模块 35% | 交易模块 35%'],
+  },
+  {
+    id: 'formula-1',
+    type: 'formula',
+    title: '公式（1-1）',
+    ruleId: 'rule.formula',
+    content: ['ReuseRate = reusedBooks / listedBooks      （1-1）'],
+  },
+  {
+    id: 'references',
+    type: 'references',
+    title: '参考文献',
+    ruleId: 'rule.references',
+    content: [
+      '[1] 示例作者甲. 校园资源循环利用平台设计研究[J]. 示例信息技术期刊, 2024.',
+      '[2] 示例作者乙. 高校二手教材流转模式分析[J]. 示例教育管理研究, 2025.',
+    ],
+  },
+  {
+    id: 'acknowledgement',
+    type: 'acknowledgement',
+    title: '致谢',
+    ruleId: 'rule.acknowledgement',
+    content: ['在论文完成过程中，感谢所有在资料整理、系统测试和论文修改阶段提供帮助的人员。'],
+  },
+  {
+    id: 'appendix',
+    type: 'appendix',
+    title: '附录A 示例配置',
+    ruleId: 'rule.appendix',
+    content: ['页面尺寸：A4；样张模式：交互式展示；规则来源：格式说明示例。'],
+  },
+];
